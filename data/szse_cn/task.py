@@ -3,54 +3,8 @@ import json
 import logging
 from celery import chord,chain,group
 
-import data.db as database
-
+from data.task import *
 from .request import *
-
-#arg : NAME 表名
-#      PREFIX 表前缀
-#      INDEX 主键,用于去重
-
-@app.task(bind=True)
-def output_data(self,data,arg):
-    if data == None:
-        logging.error("output_data: empty")
-        logging.error(arg)
-        logging.error(data)
-        return;
-
-    db = database.getDB(arg);
-    if db == None:
-        logging.error("db is empty")
-        logging.error(arg)
-        logging.error(data)
-        return;
-    index = None;
-    if "INDEX" in arg:
-        index = arg["INDEX"]
-    db.append(data,index);
-
-#数组结果解析
-@app.task(bind=True)
-def output_datas(self,data,arg):
-    if data == None:
-        logging.error("output_data: empty")
-        logging.error(arg)
-        logging.error(data)
-        return;
-    
-    db = database.getDB(arg);
-    if db == None:
-        logging.error("db is empty")
-        logging.error(arg)
-        logging.error(data)
-        return;
-
-    index = None;
-    if "INDEX" in arg:
-        index = arg["INDEX"]
-    for it in data:
-        db.append(it,index);
 
 #分时数据结果解析
 @app.task(bind=True)
@@ -163,7 +117,7 @@ def get_stock_list_page_data(self,context,param):
         raise self.retry(exc=exc,coutdown=10,max_retries=3)
 
 #获取公司信息
-@app.task(bind=True,rate_limit=50)
+@app.task(bind=True,rate_limit=5)
 def get_company(self,context,param):
     try:
         return request_company(param)

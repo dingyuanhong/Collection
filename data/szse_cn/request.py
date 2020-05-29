@@ -1,17 +1,7 @@
 import requests
 import json
 import logging
-
-def make_get_url(url,param):
-    url += "?"
-    first = True
-    for it in param:
-        if not first:
-            url += "&"
-        url += it + "=" + str(param[it]);
-        first = False
-    
-    return url;
+from data.util import *
 
 def add_random_value(url):
     url += "&random=0.7881663624839406";
@@ -38,7 +28,7 @@ def request_url(uri,param):
     
     logging.info("request ok:" + str(res.status_code));
 
-    return res.content;
+    return res.content.decode("utf-8");
 
 # 公司列表
 # http://www.szse.cn/api/report/ShowReport/data?
