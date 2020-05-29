@@ -163,7 +163,7 @@ def get_stock_list_page_data(self,context,param):
         raise self.retry(exc=exc,coutdown=10,max_retries=3)
 
 #获取公司信息
-@app.task(bind=True,rate_limit=100)
+@app.task(bind=True,rate_limit=50)
 def get_company(self,context,param):
     try:
         return request_company(param)
