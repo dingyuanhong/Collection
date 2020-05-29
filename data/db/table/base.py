@@ -56,7 +56,7 @@ class Base:
                 if it in data:
                     keys[it] = data[it]
                 else:
-                    print(data,it)
-            self.collection().update(keys,{"$setOnInsert": { **data, **{"create_time":NowDateTime()} }}, True );
+                    logging.warn(str(data)+"\n"+str(it)+":未找到")
+            return self.collection().update(keys,{"$setOnInsert": { **data, **{"create_time":NowDateTime()} }}, True );
         else:
             return self.insert(data);
