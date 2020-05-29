@@ -192,7 +192,7 @@ class TaskScheduler:
             job = Job(self.db);
             job_id = job_id[4:];
             if event.exception:
-                logging.error(event,event.exception)
+                logging.error(str(event)+str(event.exception))
                 self.onJobResult({"job_id":job_id},"exception",str(event.exception));
             elif EVENT_JOB_EXECUTED == event.code:
                 self.onJobResult({"job_id":job_id},"success","");
@@ -203,7 +203,7 @@ class TaskScheduler:
             exector = Exector(self.db);
             job_id = job_id[8:];
             if event.exception:
-                logging.error(event,event.exception)
+                logging.error(str(event)+str(event.exception))
                 self.onExectorResult({"exector_id":job_id},"exception",str(event.exception));
             elif EVENT_JOB_EXECUTED == event.code:
                 self.onExectorResult({"exector_id":job_id},"success","");
