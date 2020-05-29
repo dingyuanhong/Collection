@@ -154,21 +154,21 @@
                 {data.hasOwnProperty('job_id')?data['job_id']:''}
 {#if data.hasOwnProperty('job_id')}
                 <a class="collapse-click border-0 w-100 text-left cursor-pointer" 
-                    data-toggle="collapse" data-target="#{'exec_job_'+data['job_id']}"
+                    data-toggle="collapse" data-target="#{'exec_job_'+data['id']}"
                     role="button">
                     <h6 class="border-bottom">{data["job_id"]}</h6>
                 </a>
-                <TimerCard data="{data['timer']}" id="{data['job_id']}" type="exec_job_"></TimerCard>
+                <TimerCard data="{data['timer']}" id="{data['id']}" type="exec_job_"></TimerCard>
 {/if}
             </td>
             <td class="align-middle font-weight-bold">
                 <div class="border-0">
                     <a class="collapse-click border-0 w-100 text-left cursor-pointer" 
-                        data-toggle="collapse" data-target="#{'exec_task_'+data['task_id']}"
+                        data-toggle="collapse" data-target="#{'exec_task_'+data['id']}"
                         role="button">
                         <h6 class="border-bottom">{data["task_id"]}</h6>
                     </a>
-                    <TaskCardFull data="{data['task']}" id="{data['task_id']}" type="exec_task_"></TaskCardFull>
+                    <TaskCardFull data="{data['task']}" id="{data['id']}" type="exec_task_"></TaskCardFull>
                 </div>
             </td>
             <td>
