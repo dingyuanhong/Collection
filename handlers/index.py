@@ -31,17 +31,23 @@ class DBHanlder(BaseHandler):
             return;
 
         if cmd == "get":
-            data = json.loads(self.request.body);
+            data = self.request.body;
+            data = data.decode("utf-8")
+            data = json.loads(data);
             record_ids = [data["id"]];
             self.write( json.dumps( { "success":1,"data":db.find_jobs(record_ids) } ) );
 
         if cmd == "add":
-            data = json.loads(self.request.body);
+            data = self.request.body;
+            data = data.decode("utf-8")
+            data = json.loads(data);
             record_id = db.insert(data);
             self.write(json.dumps({"success":1,"id": record_id }));
 
         if cmd == "del":
-            data = json.loads(self.request.body);
+            data = self.request.body;
+            data = data.decode("utf-8")
+            data = json.loads(data);
             record_id = data["id"];
             res = db.remove(record_id);
             self.write(json.dumps({"success":int(res['ok']),"count":res['n']}));
@@ -77,7 +83,9 @@ class ExecHandler(BaseHandler):
         scheduler = self.application.scheduler;
 
         if cmd == "exec":
-            data = json.loads(self.request.body);
+            data = self.request.body;
+            data = data.decode("utf-8")
+            data = json.loads(data);
             task_id = data["id"];
 
             res = task.find(task_id);
@@ -89,7 +97,9 @@ class ExecHandler(BaseHandler):
             self.write(json.dumps({"success":1,"data":res}));
 
         if cmd == "fixtime":
-            data = json.loads(self.request.body);
+            data = self.request.body;
+            data = data.decode("utf-8")
+            data = json.loads(data);
             task_id = data["id"];
 
             res = task.find(task_id);
@@ -115,14 +125,18 @@ class ExecHandler(BaseHandler):
                 self.write(json.dumps({"success":-1,"data":res}));
         
         if cmd == "restart":
-            data = json.loads(self.request.body);
+            data = self.request.body;
+            data = data.decode("utf-8")
+            data = json.loads(data);
             job_id = data["id"];
             
             res = scheduler.start_job(job_id);
             self.write(json.dumps({"success":1}));
         
         if cmd == "stop":
-            data = json.loads(self.request.body);
+            data = self.request.body;
+            data = data.decode("utf-8")
+            data = json.loads(data);
             job_id = data["id"];
 
             scheduler.stop_job(job_id);
@@ -130,13 +144,16 @@ class ExecHandler(BaseHandler):
 
         if cmd == "gets":
             data = self.request.body;
+            data = data.decode("utf-8")
             data = json.loads(data);
             options = self.get_options(data);
             data = exector.find_some(options);
             self.write(json.dumps(data));
         
         if cmd == "del":
-            data = json.loads(self.request.body);
+            data = self.request.body;
+            data = data.decode("utf-8")
+            data = json.loads(data);
             record_id = data["id"];
             res = exector.remove(record_id);
             self.write(json.dumps({"success":int(res['ok']),"count":res['n']}));
