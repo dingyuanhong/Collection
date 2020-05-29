@@ -19,7 +19,8 @@ def props(obj):
             pr[name] = value
     return pr
 
-print(props(apscheduler.events))
+import logging
+logging.debug(props(apscheduler.events))
 
 def SchedulerStatusListener(context):
     def listener(event):

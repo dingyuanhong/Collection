@@ -10,6 +10,9 @@ from db.table.task import Task
 from db.table.job import Job
 from db.table.timer import Timer
 from db.table.exector import Exector
+import logging
+
+logging.debug("load index")
 
 class BaseHandler(web.RequestHandler):
     def set_default_headers(self):

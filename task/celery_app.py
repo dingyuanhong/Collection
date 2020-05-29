@@ -1,6 +1,14 @@
 import celery
 import time
 
+import logging
+logging.basicConfig(level=logging.DEBUG,
+	# filename='server.log',
+	# filemode='a',##模式，有w和a，w就是写模式，每次都会重新写日志，覆盖之前的日志
+	format="%(asctime)s %(filename)s[%(lineno)d] %(name)s %(levelname)s %(message)s",
+	datefmt = '%Y-%m-%d %H:%M:%S %a'
+)
+
 from importlib import import_module, reload
 
 #https://segmentfault.com/a/1190000010112848

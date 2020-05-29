@@ -8,6 +8,14 @@ from tornado import web
 import tornado.ioloop
 from tornado.ioloop import IOLoop
 from tornado.httpserver import HTTPServer
+import logging
+logging.basicConfig(level=logging.DEBUG,
+	# filename='server.log',
+	# filemode='a',##模式，有w和a，w就是写模式，每次都会重新写日志，覆盖之前的日志
+	format="%(asctime)s %(filename)s[%(lineno)d] %(name)s %(levelname)s %(message)s",
+	datefmt = '%Y-%m-%d %H:%M:%S %a'
+)
+
 from handlers.register import *
 from config import *
 from db.mongo import MongoFactory
@@ -17,7 +25,7 @@ import init
 class Application(web.Application):
     def __init__(self):
         handlers = fm.handlers;
-        print("可用方法:",handlers)
+        logging.debug("可用方法:"+str(handlers))
         static_handlers = [
             (r"/(.*)",tornado.web.StaticFileHandler, {"path": "./Web/public/"})
         ]

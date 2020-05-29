@@ -17,9 +17,9 @@ def Exec(content,task):
     if func == None:
         return {"code":404,"msg":"Function is None"};
     try:
-        print("exec:" + content["exector_id"] +":"+task["host"] +"->"+ task["function"]);
+        logging.debug("exec:" + content["exector_id"] +":"+task["host"] +"->"+ task["function"]);
         func(content,task);
-        print("exec complite:"+ content["exector_id"] +":" + task["host"] +"->"+ task["function"]);
+        logging.debug("exec complite:"+ content["exector_id"] +":" + task["host"] +"->"+ task["function"]);
     except Exception as ex:
         logging.error(traceback.format_exc())
         return {"code":500,"msg":str(ex)};

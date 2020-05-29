@@ -1,5 +1,6 @@
 from actuator.register import fm
 import task
 import data
+import logging
 
-print("内部方法:",fm.handlers)
+logging.debug("内部方法:"+str(fm.handlers))
