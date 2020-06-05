@@ -1,7 +1,7 @@
-from Xueqiu_Spider.Xueqiu_Rule import  Xueqiu_Rules
-from Xueqiu_Spider.RequestHelper import CacheRequestHelper
-from Xueqiu_Spider.Xueqiu_Cookie  import XueQiuCookieFactory
-from Xueqiu_Spider.util import get_url_param
+from .Xueqiu_Rule import  Xueqiu_Rules
+from .RequestHelper import CacheRequestHelper
+from .Xueqiu_Cookie  import XueQiuCookieFactory
+from .util import get_url_param
 
 def getContentDict(rules):
     dict_ = {};
@@ -20,14 +20,14 @@ class RequestError(Exception):
     def __init__(self,code,message):
         self.code = code;
         self.message = message;
-        Exception.__init__(message);
-
+        Exception.__init__(self, self.code, self.message)
 
 def Xueqiu_request(content,**args):
     rule = content["rule"];
 
     defaultHeader = {
-        "Host": "xueqiu.com",
+        "Host": "stock.xueqiu.com",
+        "Origin": "https://xueqiu.com",
         "Referer": "https://xueqiu.com/",
     };
     if "header" in rule:

@@ -91,7 +91,7 @@ def get_url_param(param,**args):
     clr = [];
     for it in params.keys():
         if it in args:
-            params[it] = args[it]
+            params[it] = str(args[it])
         if type(params[it]) == dict:
             if "status" in params[it]:
                 clr.append(it)

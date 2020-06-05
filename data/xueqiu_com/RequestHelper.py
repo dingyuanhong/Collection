@@ -1,5 +1,5 @@
 import requests
-from Xueqiu_Spider.util import *
+from .util import UserAgent,FileCache
 
 class Response:
     def __init__(self,v):
@@ -27,7 +27,7 @@ class RequestHelper:
         return res;
 
     def _post(self,url,data):
-        if not self.factory:
+        if self.factory:
             header = {**self.header,**{"Cookie": self.factory.get(url)}}
         else:
             header = self.header;
@@ -35,7 +35,7 @@ class RequestHelper:
         return res;
             
     def _get(self,url):
-        if not self.factory:
+        if self.factory:
             header = {**self.header,**{"Cookie": self.factory.get(url)}}
         else:
             header = self.header;

@@ -15,6 +15,8 @@ def Exec(content,task):
         return {"code":404,"msg":"Function Not Found"};
     func = host[task["function"]]
     if func == None:
+        func = host["*"]
+    if func == None:
         return {"code":404,"msg":"Function is None"};
     try:
         logging.debug("exec:" + content["exector_id"] +":"+task["host"] +"->"+ task["function"]);
