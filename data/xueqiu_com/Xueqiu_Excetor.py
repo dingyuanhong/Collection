@@ -49,7 +49,7 @@ def Xueqiu_request(content,**args):
         res = CacheRequestHelper(header=header,cookie=XueQiuCookieFactory()).get(url);
     else:
         print("请求地址:",url," 数据:",data);
-        res = CacheRequestHelper(header=header,ccookie=XueQiuCookieFactory()).post(url,data);
+        res = CacheRequestHelper(header=header,cookie=XueQiuCookieFactory()).post(url,data);
 
     if res.status_code != 200:
         raise RequestError(res.status_code, res.text)
