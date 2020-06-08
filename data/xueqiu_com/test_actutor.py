@@ -23,10 +23,10 @@ def income_data_test():
 
 def main():
     # stock_list_test()
-    # kline_data_test()
+    kline_data_test()
     # minute_data_test()
     # compinfo_data_test()
-    cash_flow_data_test()
+    # cash_flow_data_test()
     # balance_data_test()
     # income_data_test()
 

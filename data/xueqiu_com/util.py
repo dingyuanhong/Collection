@@ -9,6 +9,8 @@ class FileLoader:
         replaceKey = key if (".com" not in key) else key[7:int(key.index(".com"))];
         p = cookie_path.replace("index",replaceKey)
         path = root_path + p;
+
+        # print("cacheSet:",path)
         with open(path,"wb") as fp:
             fp.write(cookie.encode("utf-8"))
     
@@ -17,7 +19,8 @@ class FileLoader:
         replaceKey = key if (".com" not in key) else key[7:int(key.index(".com"))];
         p = cookie_path.replace("index",replaceKey)
         path = root_path + p;
-        
+
+        # print("cacheGet:",path)
         if os.path.exists(path):
             with open(path,"rb") as fp:
                 data = fp.read()
@@ -48,7 +51,7 @@ class FileLoader:
 class UserAgent:
     @staticmethod
     def Random():
-        lst = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36";
+        lst = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36";
         return lst;
 
 

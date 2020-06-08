@@ -217,11 +217,14 @@ stock_kline_rule = {
         "symbol":"", #股票编号
         "period":"5m",
         "count":"-142",
-        "begin":"1582632396334",
+        "begin":"1591716218251",
         "type":"before",
         "indicator":"kline,pe,pb,ps,pcf,market_capital,agt,ggt,balance",
     },
     "url":"https://stock.xueqiu.com/v5/stock/chart/kline.json",
+    "header":{
+        "Host": "stock.xueqiu.com",
+    }
 };
 
 #当日分时线（实时获取）
@@ -232,6 +235,9 @@ stock_minute_rule = {
         "period":"1d",
     },
     "url":"https://stock.xueqiu.com/v5/stock/chart/minute.json",
+    "header":{
+        "Host": "stock.xueqiu.com",
+    }
 };
 
 #活动日个股详情
@@ -346,6 +352,9 @@ cash_flow_rule = {
         "count":"5",
     },
     "url":"https://stock.xueqiu.com/v5/stock/finance/cn/cash_flow.json",
+    "header":{
+        "Host": "stock.xueqiu.com",
+    }
 };
 
 #资产负债表
@@ -357,6 +366,9 @@ balance_rule = {
         "count":"5",
     },
     "url":"https://stock.xueqiu.com/v5/stock/finance/cn/balance.json",
+    "header":{
+        "Host": "stock.xueqiu.com",
+    }
 };
 
 #利润表
@@ -368,6 +380,9 @@ income_rule = {
         "count":"5",
     },
     "url":"https://stock.xueqiu.com/v5/stock/finance/cn/income.json",
+    "header":{
+        "Host": "stock.xueqiu.com",
+    }
 };
 
 

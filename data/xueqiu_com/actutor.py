@@ -1,5 +1,6 @@
 from actuator.register import fm; 
 from .task import *
+import json
 
 @fm.route("xueqiu.com","*")
 def stock_info(context,task):
@@ -18,7 +19,9 @@ def stock_list(context,task):
 def kline_data(context,task):
     param = task["param"]
     task = get_stock_data.s("kline",param)
-    print(task.apply_async().get())
+    data = task.apply_async().get()
+    print(type(data))
+    print(json.loads(data))
 
     # task = chain( 
     #     get_stock_data.s("kline",param),
@@ -30,7 +33,9 @@ def kline_data(context,task):
 def minute_data(context,task):
     param = task["param"]
     task = get_stock_data.s("minute",param)
-    print(task.apply_async().get())
+    data = task.apply_async().get()
+    print(type(data))
+    print(data)
 
     # task = chain( 
     #     get_stock_data.s("kline",param),
@@ -42,7 +47,9 @@ def minute_data(context,task):
 def compinfo_data(context,task):
     param = task["param"]
     task = get_stock_data.s("compinfo",param)
-    print(task.apply_async().get())
+    data = task.apply_async().get()
+    print(type(data))
+    print(data)
 
     # task = chain( 
     #     get_stock_data.s("kline",param), 
@@ -54,7 +61,9 @@ def compinfo_data(context,task):
 def cash_flow_data(context,task):
     param = task["param"]
     task = get_stock_data.s("cash_flow",param)
-    print(task.apply_async().get())
+    data = task.apply_async().get()
+    print(type(data))
+    print(data)
 
     # task = chain( 
     #     get_stock_data.s("kline",param),
@@ -66,7 +75,9 @@ def cash_flow_data(context,task):
 def balance_data(context,task):
     param = task["param"]
     task = get_stock_data.s("balance",param)
-    print(task.apply_async().get())
+    data = task.apply_async().get()
+    print(type(data))
+    print(data)
 
     # task = chain( 
     #     get_stock_data.s("kline",param),
@@ -78,7 +89,9 @@ def balance_data(context,task):
 def income_data(context,task):
     param = task["param"]
     task = get_stock_data.s("income",param)
-    print(task.apply_async().get())
+    data = task.apply_async().get()
+    print(type(data))
+    print(data)
 
     # task = chain( 
     #     get_stock_data.s("kline",param),

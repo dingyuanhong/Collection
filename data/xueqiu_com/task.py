@@ -46,6 +46,7 @@ def get_stock_list(self,context,param):
                 get_stock_data.s("stocks_list",{**param,**{"page":pageno}}),
                 output_datas.s(arg)
             ).apply_async();
+            break;
         
         return None;
     except Exception as exc:

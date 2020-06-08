@@ -1,5 +1,5 @@
 from .Xueqiu_Rule import  Xueqiu_Rules
-from .RequestHelper import CacheRequestHelper
+from .RequestHelper import CacheRequestHelper,RequestHelper
 from .Xueqiu_Cookie  import XueQiuCookieFactory
 from .util import get_url_param
 
@@ -26,9 +26,9 @@ def Xueqiu_request(content,**args):
     rule = content["rule"];
 
     defaultHeader = {
-        "Host": "stock.xueqiu.com",
+        "Host": "xueqiu.com",
         "Origin": "https://xueqiu.com",
-        "Referer": "https://xueqiu.com/",
+        # "Referer": "https://xueqiu.com/",
     };
     if "header" in rule:
         header = {**defaultHeader,**rule["header"]};
@@ -43,13 +43,14 @@ def Xueqiu_request(content,**args):
     if "method" in rule:
         method = rule["method"]
 
+    print("default header:",header)
     if method == "get":
         url = url + "?" + data;
         print("请求地址:",url);
-        res = CacheRequestHelper(header=header,cookie=XueQiuCookieFactory()).get(url);
+        res = RequestHelper(header=header,cookie=XueQiuCookieFactory()).get(url);
     else:
         print("请求地址:",url," 数据:",data);
-        res = CacheRequestHelper(header=header,cookie=XueQiuCookieFactory()).post(url,data);
+        res = RequestHelper(header=header,cookie=XueQiuCookieFactory()).post(url,data);
 
     if res.status_code != 200:
         raise RequestError(res.status_code, res.text)

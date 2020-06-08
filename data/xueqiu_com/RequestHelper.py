@@ -28,17 +28,19 @@ class RequestHelper:
 
     def _post(self,url,data):
         if self.factory:
-            header = {**self.header,**{"Cookie": self.factory.get(url)}}
+            header = {**self.header,**{"Cookie": self.factory.get(self.header["Origin"])}}
         else:
             header = self.header;
+        print(url,header,data)
         res = requests.post(url,headers=header,data=data)
         return res;
             
     def _get(self,url):
         if self.factory:
-            header = {**self.header,**{"Cookie": self.factory.get(url)}}
+            header = {**self.header,**{"Cookie": self.factory.get(self.header["Origin"])}}
         else:
             header = self.header;
+        print(url,header)
         res = requests.get(url,headers=header)
         return res;
     

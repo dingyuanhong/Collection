@@ -21,10 +21,11 @@ class XueqiuCookie:
         }).get(self.Website)
 #         print(res.text)
         cookies = res.cookies.items()
+        # print("cookie:",cookies)
         cookie = ''
         for name, value in cookies:
             cookie += '{0}={1};'.format(name, value)
-#         print("cookie:",cookie)
+        # print("cookie:",cookie)
         return cookie;
     
     def url(self):
@@ -45,19 +46,21 @@ class XueQiuCookieFactory:
         return FileLoader.cacheGet(url);
 
     def check(self,res):
-        print(res.text)
+        # print(res.text)
         v = json.loads(res.text)
         if v["error_code"] == "400016":
             return True
         return False;
 
-    def done(self,):
+    def done(self):
         cookie = XueqiuCookie()
         data = cookie.update("86",username,password,True)
         if data:
             FileLoader.cacheSet(cookie.website(),data);
+            return True
         else:
             FileLoader.cacheClear(cookie.website());
+            return False
 
 if __name__ == "__main__":
     cookie = XueqiuCookie()
