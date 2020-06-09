@@ -18,30 +18,24 @@ def stock_list(context,task):
 @fm.route("xueqiu.com","kline_data")
 def kline_data(context,task):
     param = task["param"]
-    task = get_stock_data.s("kline",param)
-    data = task.apply_async().get()
-    print(type(data))
-    print(json.loads(data))
 
-    # task = chain( 
-    #     get_stock_data.s("kline",param),
-    #     output_datas.s({"NAME":"day","PREFIX":"xueqiu" ,"INDEX":["symbol","date"] }) 
-    # )
-    # task.apply_async()
+    task = chain( 
+        get_stock_data.s("kline",param),
+        parse_kline.s(param),
+        output_datas.s({"NAME":"day","PREFIX":"xueqiu" ,"INDEX":["symbol","date"] }) 
+    )
+    task.apply_async()
 
 @fm.route("xueqiu.com","minute_data")
 def minute_data(context,task):
     param = task["param"]
-    task = get_stock_data.s("minute",param)
-    data = task.apply_async().get()
-    print(type(data))
-    print(data)
 
-    # task = chain( 
-    #     get_stock_data.s("kline",param),
-    #     output_datas.s({"NAME":"day","PREFIX":"xueqiu" ,"INDEX":["symbol","date"] }) 
-    # )
-    # task.apply_async()
+    task = chain( 
+        get_stock_data.s("minute",param),
+        parse_minute.s(param),
+        output_datas.s({"NAME":"minus","PREFIX":"xueqiu_" + param["period"] ,"INDEX":["symbol","date"] }) 
+    )
+    task.apply_async()
 
 @fm.route("xueqiu.com","compinfo_data")
 def compinfo_data(context,task):
@@ -49,6 +43,7 @@ def compinfo_data(context,task):
     task = get_stock_data.s("compinfo",param)
     data = task.apply_async().get()
     print(type(data))
+    data = parse_compinfo(data,param)
     print(data)
 
     # task = chain( 
@@ -60,41 +55,32 @@ def compinfo_data(context,task):
 @fm.route("xueqiu.com","cash_flow_data")
 def cash_flow_data(context,task):
     param = task["param"]
-    task = get_stock_data.s("cash_flow",param)
-    data = task.apply_async().get()
-    print(type(data))
-    print(data)
 
-    # task = chain( 
-    #     get_stock_data.s("kline",param),
-    #     output_datas.s({"NAME":"day","PREFIX":"xueqiu" ,"INDEX":["symbol","date"] }) 
-    # )
-    # task.apply_async()
+    task = chain( 
+        get_stock_data.s("cash_flow",param),
+        parse_cash_flow.s(param),
+        output_datas.s({"NAME":"company","PREFIX":"xueqiu_cash_flow" ,"INDEX":["symbol","date","report_name"] }) 
+    )
+    task.apply_async()
 
 @fm.route("xueqiu.com","balance_data")
 def balance_data(context,task):
     param = task["param"]
-    task = get_stock_data.s("balance",param)
-    data = task.apply_async().get()
-    print(type(data))
-    print(data)
 
-    # task = chain( 
-    #     get_stock_data.s("kline",param),
-    #     output_datas.s({"NAME":"day","PREFIX":"xueqiu" ,"INDEX":["symbol","date"] }) 
-    # )
-    # task.apply_async()
+    task = chain( 
+        get_stock_data.s("balance",param),
+        parse_cash_flow.s(param),
+        output_datas.s({"NAME":"company","PREFIX":"xueqiu_balance" ,"INDEX":["symbol","date","report_name"] }) 
+    )
+    task.apply_async()
 
 @fm.route("xueqiu.com","income_data")
 def income_data(context,task):
     param = task["param"]
-    task = get_stock_data.s("income",param)
-    data = task.apply_async().get()
-    print(type(data))
-    print(data)
 
-    # task = chain( 
-    #     get_stock_data.s("kline",param),
-    #     output_datas.s({"NAME":"day","PREFIX":"xueqiu" ,"INDEX":["symbol","date"] }) 
-    # )
-    # task.apply_async()
+    task = chain( 
+        get_stock_data.s("income",param),
+        parse_cash_flow.s(param),
+        output_datas.s({"NAME":"company","PREFIX":"xueqiu_income" ,"INDEX":["symbol","date","report_name"] }) 
+    )
+    task.apply_async()

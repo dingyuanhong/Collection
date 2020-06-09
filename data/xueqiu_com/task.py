@@ -1,6 +1,7 @@
 from task import app
 import json
 import logging
+import time
 from celery import chord,chain,group
 
 from data.task import *
@@ -51,3 +52,59 @@ def get_stock_list(self,context,param):
         return None;
     except Exception as exc:
         raise self.retry(exc=exc,coutdown=10,max_retries=3)
+
+@app.task(bind=True)
+def parse_kline(self,data,param):
+    data = json.loads(data)
+
+    column = data["data"]["column"];
+    items = data["data"]["item"];
+    symbol =  data["data"]["symbol"];
+
+    result = [];
+    for it in items:
+        line = {};
+        for i in range(0,len(column)):
+            line[column[i]] = it[i];
+        line["symbol"] = symbol;
+        local = time.localtime(int(line["timestamp"])/1000)
+        line["date"] = time.strftime("%Y-%m-%d %H:%M:%S", local)
+
+        result.append(line)
+    return result;
+
+@app.task(bind=True)
+def parse_minute(self,data,param):
+    data = json.loads(data)
+
+    items = data["data"]["items"];
+    symbol =  param["symbol"];
+
+    result = [];
+    for it in items:
+        line = it;
+        line["symbol"] = symbol;
+        local = time.localtime(int(line["timestamp"])/1000)
+        line["date"] = time.strftime("%Y-%m-%d %H:%M:%S", local)
+
+        result.append(line)
+    return result;
+
+def parse_compinfo(data,param):
+    pass
+
+@app.task
+def parse_cash_flow(data,param):
+    data = json.loads(data)
+    items = data["data"]["list"];
+    symbol =  param["symbol"];
+
+    result = [];
+    for it in items:
+        line = it;
+        line["symbol"] = symbol;
+        local = time.localtime(int(line["report_date"])/1000)
+        line["date"] = time.strftime("%Y-%m-%d %H:%M:%S", local)
+
+        result.append(line)
+    return result;
