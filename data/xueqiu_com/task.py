@@ -15,10 +15,8 @@ def get_stock_data(self,func,param):
         raise self.retry(exc=exc,coutdown=10,max_retries=3)
 
 @app.task(bind=True)
-def get_stock_info(self,func,param):
+def get_stock_info(self,func,param,arg):
     try:
-        arg = {"NAME":"day","PREFIX":"sina_future" ,"INDEX":["symbol"] }
-
         chain(
             get_stock_data.s(func,param),
             output_datas.s(arg)
@@ -27,7 +25,7 @@ def get_stock_info(self,func,param):
         raise self.retry(exc=exc,coutdown=10,max_retries=3)
 
 @app.task(bind=True)
-def get_stock_list(self,context,param):
+def get_stock_list(self,context,param,arg):
     try:
         count = get_stock_data.s("stocks_list_count",param)
         count = count.apply_async().get()
@@ -38,8 +36,6 @@ def get_stock_list(self,context,param):
             num = int(param["num"]) if (int(param["num"]) > 0) else 90;
         param["num"] = num;
         pagecount = int(count / num ) + (1 if count%num > 0 else 0)
-
-        arg = {"NAME":"stock","PREFIX":"xueqiu" ,"INDEX":["symbol"] }
 
         for i in range(1,pagecount+1):
             pageno = i;

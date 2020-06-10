@@ -1,6 +1,8 @@
 from actuator.register import fm; 
 from .task import *
+import data.db as database
 import json
+import copy
 
 class self_handlers:
     handlers = {};
@@ -19,20 +21,33 @@ def stock_run(context,task):
     host = this.handlers[function]
     host(context,task);
 
-@fm.route("xueqiu.com","*")
-def stock_info(context,task):
+@fm.route("xueqiu.com","stocks_all")
+@this.route("stocks_all")
+def stocks_all(context,task):
+    db = database.getDB({"NAME":"stock","PREFIX":"xueqiu"});
+    codes = db.get_stock_symbol()
+
     param = task["param"]
-    func = task["function"]
-    task = get_stock_info.s(None,func,param)
-    task.apply_async();
+    task["function"] = param["subfunction"]
+    del param["subfunction"];
+    if not task["function"]:
+        raise Exception("未知的方法")
+    if len(task["function"]) == 0 :
+        raise Exception("未定义的方法")
+
+    for code in codes :
+        param["symbol"] = code;
+        stock_run(context,copy.deepcopy(task))
 
 @fm.route("xueqiu.com","stock_list")
+@this.route("stock_list")
 def stock_list(context,task):
     param = task["param"]
-    task = get_stock_list.s(None,param)
+    task = get_stock_list.s(None,param, {"NAME":"stock","PREFIX":"xueqiu" ,"INDEX":["symbol"] })
     task.apply_async()
 
 @fm.route("xueqiu.com","kline_data")
+@this.route("kline_data")
 def kline_data(context,task):
     param = task["param"]
 
@@ -44,6 +59,7 @@ def kline_data(context,task):
     task.apply_async()
 
 @fm.route("xueqiu.com","minute_data")
+@this.route("minute_data")
 def minute_data(context,task):
     param = task["param"]
 
@@ -70,6 +86,7 @@ def compinfo_data(context,task):
     # task.apply_async() 
 
 @fm.route("xueqiu.com","cash_flow_data")
+@this.route("cash_flow_data")
 def cash_flow_data(context,task):
     param = task["param"]
 
@@ -81,6 +98,7 @@ def cash_flow_data(context,task):
     task.apply_async()
 
 @fm.route("xueqiu.com","balance_data")
+@this.route("balance_data")
 def balance_data(context,task):
     param = task["param"]
 
@@ -92,6 +110,7 @@ def balance_data(context,task):
     task.apply_async()
 
 @fm.route("xueqiu.com","income_data")
+@this.route("income_data")
 def income_data(context,task):
     param = task["param"]
 

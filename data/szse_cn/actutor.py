@@ -20,6 +20,25 @@ def stock_run(context,task):
     host = this.handlers[function]
     host(context,task);
 
+@fm.route("szse.com","stocks_all")
+@this.route("stocks_all")
+def stocks_all(context,task):
+    db = database.getDB({"NAME":"stock","PREFIX":"szse"});
+    codes = db.get_szse_stock_ids()
+
+    param = task["param"]
+    task["function"] = param["subfunction"]
+    del param["subfunction"];
+    if not task["function"]:
+        raise Exception("未知的方法")
+    if len(task["function"]) == 0 :
+        raise Exception("未定义的方法")
+    
+    for code in codes :
+        param["code"] = code;
+        task["param"] = param;
+        stock_run(context,copy.deepcopy(task))
+
 @fm.route("szse.com","stock_list")
 @this.route("stock_list")
 def stock_list(context,task):
@@ -74,22 +93,3 @@ def company_data(context,task):
         output_data.s({"NAME":"company","PREFIX":"szse" ,"INDEX":["agdm"] })
     )
     task.apply_async()
-
-@fm.route("szse.com","stocks_all")
-@this.route("stocks_all")
-def stocks_all(context,task):
-    db = database.getDB({"NAME":"stock","PREFIX":"szse"});
-    codes = db.get_szse_stock_ids()
-
-    param = task["param"]
-    task["function"] = param["subfunction"]
-    del param["subfunction"];
-    if not task["function"]:
-        raise Exception("未知的方法")
-    if len(task["function"]) == 0 :
-        raise Exception("未定义的方法")
-    
-    for code in codes :
-        param["code"] = code;
-        task["param"] = param;
-        stock_run(context,copy.deepcopy(task))

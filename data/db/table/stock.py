@@ -12,7 +12,7 @@ class Stock(Base):
             lst.append(it["zqdm"]);
         return lst;
 
-    def get_sina_stock_ids(self):
+    def get_stock_symbol(self):
         data = self.collection().find({},{"symbol":1,"_id":0});
         lst = []
         for it in data:
