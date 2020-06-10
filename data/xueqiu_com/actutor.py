@@ -2,6 +2,23 @@ from actuator.register import fm;
 from .task import *
 import json
 
+class self_handlers:
+    handlers = {};
+    def route(self,func):
+        def registe(cls):
+            self.handlers[func] = cls;
+            return cls;
+        return registe;
+
+this = self_handlers()
+
+@fm.route("xueqiu.com","stock_run")
+@this.route("stock_run")
+def stock_run(context,task):
+    function = task["function"]
+    host = this.handlers[function]
+    host(context,task);
+
 @fm.route("xueqiu.com","*")
 def stock_info(context,task):
     param = task["param"]

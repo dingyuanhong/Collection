@@ -92,7 +92,7 @@ def stock_minuts_parse(self,data,arg):
     output_data.s(data, arg ).apply_async();
 
 #获取公司数据
-@app.task(bind=True)
+@app.task(bind=True,rate_limit=5)
 def get_stock_list(self,context,param,arg):
     try:
         pagecount = request_stock_list_page_count(param)
@@ -109,7 +109,7 @@ def get_stock_list(self,context,param,arg):
         raise self.retry(exc=exc,coutdown=10,max_retries=3)
 
 #获取公司分页数据
-@app.task(bind=True,rate_limit=10)
+@app.task(bind=True,rate_limit=5)
 def get_stock_list_page_data(self,context,param):
     try:
         return request_stock_list(param)
@@ -125,7 +125,7 @@ def get_company(self,context,param):
         raise self.retry(exc=exc,coutdown=10,max_retries=3)
 
 #获取个股数据
-@app.task(bind=True,rate_limit=10)
+@app.task(bind=True,rate_limit=5)
 def get_stock_data(self,context,param):
     try:
         return request_stock_data(param)
@@ -133,7 +133,7 @@ def get_stock_data(self,context,param):
         raise self.retry(exc=exc,coutdown=10,max_retries=3)
 
 #获取分时数据
-@app.task(bind=True,rate_limit=10)
+@app.task(bind=True,rate_limit=5)
 def get_stock_minuts_data(self,context,param):
     try:
         return request_stock_minuts_data(param)
